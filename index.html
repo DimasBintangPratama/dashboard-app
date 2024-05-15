@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Analitic Graphic</title>
+  </head>
+  <style>
+    body {
+      display: block !important;
+    }
+    nav {
+      display: flex !important;
+      background: "red" !important;
+    }
+    ul {
+      display: inline-flex !important;
+    }
+    li {
+      margin: 10px;
+    }
+  </style>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/">Dashboard</a></li>
+        <li><a href="/">About Us</a></li>
+      </ul>
+    </nav>
+    <main>
+      <section>
+        <h1>Web Analitic Customer</h1>
+        <canvas id="myChart"></canvas>
+      </section>
+    </main>
+    <footer>@copyrigth Dimas Bintang Pratama</footer>
+    <script type="module" src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const ctx = document.getElementById("myChart");
+      var customers;
+      var countries;
+      new Promise((resolve, reject) => {
+        fetch("./data/customers.json")
+          .then((resp) => resp.json())
+          .then((items) => {
+            customers = items;
+            countries = customers.map((item) => item.country);
+            console.log(countries);
+            new Chart(ctx, {
+              type: "bar",
+              data: {
+                labels: countries,
+                datasets: [
+                  {
+                    label: "# data customer from every country",
+                    data: [12, 19, 3, 5, 2, 3],
+                    borderWidth: 1,
+                  },
+                ],
+              },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                  },
+                },
+              },
+            });
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    </script>
+  </body>
+</html>
